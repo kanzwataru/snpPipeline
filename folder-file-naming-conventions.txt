@@ -1,0 +1,96 @@
+$FINAL_FILM_ROOT
+_mayaproj
+-images
+-[...]
+0_Preproduction
+-Animatics
+-Concept
+-Reference
+1_3DCG
+-Env
+--EnemyBase
+---Textures
+---Renders
+---Ref
+-->enemyBase_env.ma
+-Props
+--TapeServer
+---Textures
+---Renders
+---Ref
+-->tapeServer_prop.ma
+-Rigs
+--MX-3_Scout
+---Model
+---Textures
+---Renders
+---Ref
+--->MX3Scout
+-Scenes
+--C20
+---LO
+---Blasts
+-->c20.ma
+2_2DFX
+-C20
+---CG
+---Blasts
+-->c20.kra
+3_Comp
+-C20
+---_previews
+---BG
+--->c20_bg.psd
+---A
+---B
+---C
+---[...]
+-->c20.aep
+4_Editorial
+-Footage
+->c20.mp4
+-Audio
+->missiles_fx.wav
+-Renders
+->finalfilm_preview_03.mp4
+>FinalFilmEdit.prproj
+
+
+
+
+__ Naming Conventions __
+
+Asset: [name]_[atype]{_[version]_[identifier]}.ma
+       (SpacePilot_rig_101_SLEEVESNEW.ma)
+       (F1Missile_rig.ma) <-- MASTER
+       (tapeServer_prop_2.ma)
+
+Scene: [scene]_[#-stage]{_[version]_[identifier]}.ma
+       (c20_1-LO_02.ma) Second stage of layout
+       (c20_2-anim_04_KEYS.ma) Fourth file, blocking, animation
+       (c20_2-anim_64_TWEENS.ma) 64th file, inbetweening, animation
+       (c20_3-lighting_02_RETAKE.ma) second file, custom identifier, lighting
+       (c20.ma) <-- MASTER
+
+2DFX : [scene]_[stage]{_[version]_[identifier]}.kra
+       (c20_LO_02.kra)
+       (c20_keys_03_MISSILES.kra)
+       (c20_tweens_21.kra)
+       (c20_cleanup_04_FIXED.kra)
+       (c20.kra) <-- MASTER
+
+Frame: [layer]_[####].exr
+
+Comp : [scene]{_[version]_[identifier]}.aep
+       (c20_12.aep)
+       (c20_34_GRAIN.aep)
+       (c20.aep) <-- MASTER
+
+Video: [scene].mp4
+
+Edit : FinalFilmEdit_[version]_[identifier].prproj
+       (FinalFilmEdit_10.prproj)
+       (FinalFilmEdit_12_AUDIO.prproj)
+       (FinalFilmEdit_14_RETAKE.prproj)
+
+

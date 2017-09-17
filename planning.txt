@@ -1,0 +1,41 @@
+[Data]
+Asset
+-Import
+-Reference
+-Load
+-Create, Delete, Duplicate
+-Publish/Manage Version
+-Check if latest
+
+Scene
+-Load
+-Create, Delete, Duplicate
+-Publish/Manage Version
+-Render
+-Check if latest
+
+[Managers]
+Render Manager
+=List of scenes, indication if current or not
+-Deep check (MD5) if current
+-Set up render layers (?)
+-Render all/selected scene(s)
+-Playblast all/selected scene(s)
+
+Asset/Scene Manager
+-Import/Reference/Load Assets or Scenes
+-Create/Delete/Duplicate Assets or Scenes
+-Manage Versions/Archive Old Scenes
+
+Resource Manager
+-Consolidate texture/image/sound paths
+-List resources
+
+Settings Manager
+-Set env var to use
+-Set env var
+
+Data Manager
+-Backup
+-Archive
+-Sync to/from USB (plus backup)
