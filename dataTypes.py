@@ -71,15 +71,19 @@ def compareDate(master, compared, path):
 
     return mastertime >= comparedtime
 
-def pathOfAssetType(atype, named=None):
+def pathOfAssetType(atype, named=None, isRelative=False):
     """
     Returns the folder where assets of type 'atype' are
     stored. If 'named' is provided, also adds the name of 
-    a specific asset
+    a specific asset. If relative is True, adds Maya env
+    variable for the root of the pipeline
     """
-    from snpPipeline import ROOT_DIR
+    from snpPipeline import ROOT_DIR, PROJECT_ROOT_VAR
 
-    root = ROOT_DIR
+    if isRelative:
+        root = "$" + PROJECT_ROOT_VAR
+    else:
+        root = ROOT_DIR
 
     # directory for this type of attribute
     path = os.path.join(root, "1_3DCG", ASSET_TYPES[atype])
@@ -249,7 +253,7 @@ class Asset(object):
         else:
             return 1
 
-    def fileFromVersion(self, version):
+    def fileFromVersion(self, version, isRelative=False):
         # checks
         if not version:
             cmds.error("Internal error: no version specified for " + str(self))
@@ -260,7 +264,7 @@ class Asset(object):
         filename = self.filenameFromVersion(version)
 
         # put together the full path
-        path = os.path.join(self.getBaseDir(), filename)
+        path = os.path.join(self.getBaseDir(isRelative), filename)
 
         return path
 
@@ -287,8 +291,8 @@ class Asset(object):
 
         return filename
 
-    def getBaseDir(self):
-        return os.path.join(pathOfAssetType(self.atype, named=self.name))
+    def getBaseDir(self, isRelative=False):
+        return os.path.join(pathOfAssetType(self.atype, named=self.name, isRelative=isRelative))
 
     def getAllFiles(self, asFullpath=False, includingPointer=False):
         files = []
@@ -315,7 +319,7 @@ class Asset(object):
         cmds.file(path, open=True)
 
     def importVersion(self, version, toNamespace=None, asReference=False):
-        path = self.fileFromVersion(version)
+        path = self.fileFromVersion(version, isRelative=True)
 
         if not toNamespace:
             toNamespace = self.name
