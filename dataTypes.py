@@ -333,7 +333,7 @@ class Asset(object):
     def saveNewVersion(self, descriptor):
         # get file name
         newver = _addPadding(str(int(self.latest) + 1))
-        filename = self.filenameFromVersion(newver, descriptor=descriptor)
+        filename = self.filenameFromVersion(newver, descriptor=descriptor.upper())
 
         # get asset base path
         filepath = pathOfAssetType(self.atype)

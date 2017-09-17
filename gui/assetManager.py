@@ -1,6 +1,7 @@
 """
 UI Classes for Asset Manager (and Shot Manager)
 """
+import os
 import maya.cmds as cmds
 from collections import namedtuple
 
@@ -38,6 +39,10 @@ def initAssets(atype):
                 continue
 
             path = dty.pathOfAssetType(atype, named=name)
+
+            if not os.path.isdir(path):
+                # Don't try to make an asset based on a file
+                continue
 
             if atype == "shot":
                 assets.append(dty.Shot(path))
