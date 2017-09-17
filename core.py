@@ -274,6 +274,7 @@ def createAssetDir(name, atype):
     if atype == "shot":
         os.mkdir(os.path.join(assetDir, "LO"))
         os.mkdir(os.path.join(assetDir, "Blasts"))
+        os.mkdir(os.path.join(assetDir, "Reference"))
     else:
         os.mkdir(os.path.join(assetDir, "Textures"))
         os.mkdir(os.path.join(assetDir, "Renders"))
@@ -336,7 +337,7 @@ def createPipeline():
     os.mkdir(os.path.join(root, "0_Preproduction", "Concept"))
     os.mkdir(os.path.join(root, "0_Preproduction", "Reference"))
 
-    os.mkdir(os.path.join(root, "1_3DCG", "Env"))
+    os.mkdir(os.path.join(root, "1_3DCG", "Environment"))
     os.mkdir(os.path.join(root, "1_3DCG", "Props"))
     os.mkdir(os.path.join(root, "1_3DCG", "Rigs"))
     os.mkdir(os.path.join(root, "1_3DCG", "Scenes"))
