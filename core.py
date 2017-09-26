@@ -231,11 +231,11 @@ def transferVersion(version, ofShot, ofStage):
     if ofStage == "Layout":
         nextstage = "Animation"
         nextstage_type = "2-anim"
-        desc = "FROM-LO"
+        desc = "FROM-LO" + version
     elif ofStage == "Animation":
         nextstage = "Lighting"
         nextstage_type = "3-lighting"
-        desc = "FROM-ANIM"
+        desc = "FROM-ANIM" + version
     else:
         raise Exception("Internal Error: Invalid shot stage '" + ofStage + "'")
 
