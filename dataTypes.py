@@ -383,6 +383,15 @@ class Shot(object):
     def renderVersion(self, version, ofStage):
         raise NotImplementedError
 
+    def getCurrentCam(self):
+        try:
+            currentcam = cmds.modelEditor(cmds.playblast(activeEditor=True), q=True, camera=True)
+        except:
+            currentcam = None
+            cmds.warning("Currently selected panel is invalid, please click in the viewport.")
+
+        return currentcam
+
     def playblastVersion(self, version, ofStage, toPath=None):
         # Get full file path of version
         versionfile = self.shotstages[ofStage].fileFromVersion(version)
@@ -402,7 +411,23 @@ class Shot(object):
             blastname = '_'.join([self.name, ofStage, version, "PLAYBLAST", str(count)])
             file = os.path.join(blastdir, blastname)
 
+        # Switch to shot cam for playblasting (save previous cam name to be able to switch back)
+        currentcam = self.getCurrentCam()
+        shotcam = self.name + "_CAM"
+
+        if not currentcam:
+            return
+
+        if currentcam != shotcam:
+            if cmds.objExists(shotcam):
+                cmds.lookThru(shotcam)
+            else:
+                cmds.warning("Shot cam does not exist, using current camera (naming convention: [SHOTNAME]_CAM")
+
         # Playblast
         cmds.playblast(width=1280, height=720, percent=100, filename=file)
+
+        if shotcam and currentcam != shotcam:
+            cmds.lookThru(currentcam)
 
         mel.eval("print \"Playblast: " + file + "\"")
