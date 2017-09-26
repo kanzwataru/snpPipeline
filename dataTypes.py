@@ -383,12 +383,12 @@ class Shot(object):
     def renderVersion(self, version, ofStage):
         raise NotImplementedError
 
-    def playblastVersion(self, version, ofStage):
+    def playblastVersion(self, version, ofStage, toPath=None):
         # Get full file path of version
         versionfile = self.shotstages[ofStage].fileFromVersion(version)
 
         # Blasts directory
-        blastdir = os.path.join(os.path.split(versionfile)[0], "Blasts")
+        blastdir = toPath if toPath else os.path.join(os.path.split(versionfile)[0], "Blasts")
 
         # Name of playblast file
         blastname = '_'.join([self.name, ofStage, version, "PLAYBLAST"])
