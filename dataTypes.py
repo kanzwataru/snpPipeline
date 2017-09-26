@@ -392,7 +392,7 @@ class Shot(object):
 
         return currentcam
 
-    def playblastVersion(self, version, ofStage, toPath=None):
+    def playblastVersion(self, version, ofStage, toPath=None, fromCam=None, resolutionMult=0.75):
         # Get full file path of version
         versionfile = self.shotstages[ofStage].fileFromVersion(version)
 
@@ -413,7 +413,7 @@ class Shot(object):
 
         # Switch to shot cam for playblasting (save previous cam name to be able to switch back)
         currentcam = self.getCurrentCam()
-        shotcam = self.name + "_CAM"
+        shotcam = fromCam if fromCam else self.name + "_CAM"
 
         if not currentcam:
             return
@@ -425,7 +425,9 @@ class Shot(object):
                 cmds.warning("Shot cam does not exist, using current camera (naming convention: [SHOTNAME]_CAM")
 
         # Playblast
-        cmds.playblast(width=1280, height=720, percent=100, filename=file)
+        w = cmds.getAttr("defaultResolution.width") * resolutionMult
+        h = cmds.getAttr("defaultResolution.height") * resolutionMult
+        cmds.playblast(width=w, height=h, percent=100, filename=file)
 
         if shotcam and currentcam != shotcam:
             cmds.lookThru(currentcam)
