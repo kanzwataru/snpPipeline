@@ -21,7 +21,7 @@ else
         filename=$ARCHIVENAME-$count.tar
     done
 
-    tar -cvf $filename "$1"
+    tar -cvzf $filename "$1"
 fi
 
 read -p "Press Return to continue..."
