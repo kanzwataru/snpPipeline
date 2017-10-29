@@ -18,7 +18,7 @@ else
     while [[ -f $filename ]]; do
         count=$((count+1))
 
-        filename=$ARCHIVENAME-$count.tar
+        filename=$ARCHIVENAME-$count.tar.gz
     done
 
     tar -cvzf $filename "$1"
