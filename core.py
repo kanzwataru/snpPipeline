@@ -34,9 +34,14 @@ def getAssets(atype):
     # get the dir where these assets are stored
     path = dty.pathOfAssetType(atype)
 
+    def skey(x):
+        try: y = x.split('_')[2].split('.')[0]
+        except: y = x
+        return y
+
     # list directory
     try:
-    	assets = os.listdir(path)
+    	assets = sorted(os.listdir(path))
     except OSError:
     	cmds.warning("No assets")
     	return None
@@ -205,7 +210,7 @@ def publishAsset(asset, version):
     shutil.copyfile(versionfile, master)
 
     # make pointer file
-    pointerpath = os.path.join(splitdir[0], 
+    pointerpath = os.path.join(splitdir[0],
         asset.filenameFromVersion("MASTER", ".pointer"))
 
     with open(pointerpath, mode="w") as file:
@@ -263,7 +268,7 @@ def transferVersion(version, ofShot, ofStage):
 def createAssetDir(name, atype):
     # make asset directory
     assetDir = dty.pathOfAssetType(atype, named=name)
-    
+
     if(os.path.exists(assetDir)):
         cmds.warning("Asset already exists")
         return None
@@ -360,7 +365,6 @@ def createPipeline():
     for file_rule in cmds.workspace(query=True, fileRuleList=True):
         file_rule_dir = cmds.workspace(fileRuleEntry=file_rule)
         maya_file_rule_dir = os.path.join( mayaproj, file_rule_dir)
-        
+
         if not os.path.exists( maya_file_rule_dir ):
             os.makedirs( maya_file_rule_dir )
-

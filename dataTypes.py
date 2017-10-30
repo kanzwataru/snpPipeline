@@ -74,7 +74,7 @@ def compareDate(master, compared, path):
 def pathOfAssetType(atype, named=None, isRelative=False):
     """
     Returns the folder where assets of type 'atype' are
-    stored. If 'named' is provided, also adds the name of 
+    stored. If 'named' is provided, also adds the name of
     a specific asset. If relative is True, adds Maya env
     variable for the root of the pipeline
     """
@@ -130,7 +130,7 @@ class Asset(object):
         self.name = os.path.basename(path)
 
         # list scene files
-        files = os.listdir(path)
+        files = sorted(os.listdir(path))
 
         # add corresponding files to list
         scenes = []
@@ -283,7 +283,7 @@ class Asset(object):
             if descriptor == "/":
                 descriptor = self.versions[version]
 
-            # Check if we have a descriptor    
+            # Check if we have a descriptor
             if descriptor != "":
                 filename = self.name + "_" + self.atype + "_" + version + "_" + descriptor + ext
             else:
@@ -310,7 +310,7 @@ class Asset(object):
             except:
                 pass
 
-        return files               
+        return files
 
     def openVersion(self, version):
         path = self.fileFromVersion(version)
@@ -328,7 +328,7 @@ class Asset(object):
         if asReference:
             cmds.file(path, r=True, namespace=toNamespace)
         else:
-            cmds.file(path, i=True, namespace=toNamespace)            
+            cmds.file(path, i=True, namespace=toNamespace)
 
     def saveNewVersion(self, descriptor):
         # get file name
@@ -402,7 +402,7 @@ class Shot(object):
         # Name of playblast file
         blastname = '_'.join([self.name, ofStage, version, "PLAYBLAST"])
         file = os.path.join(blastdir, blastname)
-        
+
         # Avoid overwriting existing playblasts
         count = 0
         while os.path.exists(file + ".mov") or os.path.exists(file + ".avi") or os.path.exists(file + ".mp4"):

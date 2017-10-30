@@ -405,7 +405,7 @@ class ShotManager(Manager):
         Publishes the selected version for the selected asset
         """
         if self.selectedVersions[shotstage] and self.selectedAsset:
-            p.publishAsset(self.selectedAsset.shotstages[shotstage], 
+            p.publishAsset(self.selectedAsset.shotstages[shotstage],
                             self.selectedVersions[shotstage])
             self.refreshUI()
 
@@ -454,7 +454,7 @@ class ShotManager(Manager):
         Publishes the selected version for the selected asset
         """
         if self.selectedVersions[shotstage] and self.selectedAsset:
-            p.publishAsset(self.selectedAsset.shotstages[shotstage], 
+            p.publishAsset(self.selectedAsset.shotstages[shotstage],
                             self.selectedVersions[shotstage])
 
             self.refreshUI()
@@ -493,7 +493,7 @@ class ShotManager(Manager):
         # add to gui
         self.ui.addVersionsInfo(versions, pointedver, atVersion, currentStage, self.selectedVersions, shotstage)
 
-    
+
     def switchToOpenAssetIn(self, assets):
         try:
             info = p.getOpenAssetInfo()
@@ -583,7 +583,7 @@ class ManagerUI(object):
             cmds.iconTextCheckBox(item, e=True, value=0)
 
     def clearVersionsList(self):
-        cmds.textScrollList(self.ui["versionList"], edit=True, removeAll=True)           
+        cmds.textScrollList(self.ui["versionList"], edit=True, removeAll=True)
 
     # Dialogs
     def CloneDialog(self, action):
@@ -673,7 +673,7 @@ class ManagerUI(object):
                             parent=self.ui["buttonRow"],
                             command=lambda _: self.C_importAsset(asRef=True))
         cmds.separator(width=175, style="none", parent=self.ui["buttonRow"])
-    
+
     def createAssetsListRightButtons(self):
         self.ui["renameBtn"] = cmds.button(
                             label="Rename",
@@ -702,7 +702,7 @@ class ManagerUI(object):
                             parent=self.ui["buttonRow"],
                             command=lambda _: self.C_deleteAsset())
         cmds.separator(height=10, style="none", parent=self.ui["rootCol"])
-    
+
     def createAssetsListButtons(self):
         # button row
         self.ui["buttonRow"] = cmds.rowLayout(
@@ -747,13 +747,13 @@ class ManagerUI(object):
 
 
         self.ui["win"] = cmds.window(
-                                winName, 
+                                winName,
                                 title=self.windowTitle,
-                                width=500, 
-                                height=600, 
+                                width=500,
+                                height=600,
                                 #sizeable=True,
-                                sizeable=False, 
-                                maximizeButton=False, 
+                                sizeable=False,
+                                maximizeButton=False,
                                 menuBar=True)
 
         # create root layout
@@ -765,7 +765,7 @@ class ManagerUI(object):
         self.createUITop()
 
         self.createUIBtm()
-        
+
         # show window
         cmds.showWindow()
 
@@ -808,7 +808,7 @@ class AssetManagerUI(ManagerUI):
         else:
             cmds.error("Invalid status")
 
-        
+
         #color = su.multvec(color, (1.0,1.0,1.0))
         """
         if self.lastwasdark:
@@ -822,8 +822,8 @@ class AssetManagerUI(ManagerUI):
         cmds.iconTextCheckBox(
                 name,
                 width=490,
-                height=30, 
-                style='iconAndTextHorizontal', 
+                height=30,
+                style='iconAndTextHorizontal',
                 image1=icon,
                 label=name + assetstatus,
                 parent=self.ui["assetList"],
@@ -838,7 +838,7 @@ class AssetManagerUI(ManagerUI):
         """
         for v, desc in versions.iteritems():
             if v != "MASTER":
-                
+
                 pointed = ""
                 if v == pointedVer:
                     pointed = "@ "
@@ -882,8 +882,8 @@ class AssetManagerUI(ManagerUI):
         self.createAssetsListButtons()
 
     def versionListCallback(self, *args):
-        ver = cmds.textScrollList(self.ui["versionList"], 
-                                    query=True, 
+        ver = cmds.textScrollList(self.ui["versionList"],
+                                    query=True,
                                     selectUniqueTagItem=True)
 
         self.C_versionListChanged(ver[0])
@@ -960,7 +960,7 @@ class ShotManagerUI(ManagerUI):
     def addShotInfoFor(self, shot):
         padlen = 16 - len(shot.name)
         pad = " " * padlen
-        
+
         sep = " | "
         blank = "   "
 
@@ -998,8 +998,8 @@ class ShotManagerUI(ManagerUI):
         cmds.iconTextCheckBox(
                 name,
                 width=490,
-                height=30, 
-                style='iconAndTextHorizontal', 
+                height=30,
+                style='iconAndTextHorizontal',
                 image1=image,
                 label=name + assetstatus,
                 parent=self.ui["assetList"],
@@ -1008,7 +1008,7 @@ class ShotManagerUI(ManagerUI):
                 onCommand=lambda _, x=name: self.C_switchToAssetNamed(x),
                 offCommand=lambda _, x=name: self.selectAssetListItem(x))
 
-    
+
     def clearVersionsList(self):
         cmds.textScrollList(self.ui["verList" + "Layout"], edit=True, removeAll=True)
         cmds.textScrollList(self.ui["verList" + "Animation"], edit=True, removeAll=True)
@@ -1038,7 +1038,7 @@ class ShotManagerUI(ManagerUI):
 
         cmds.textScrollList(self.ui["verList" + shotstage],
                             edit=True,
-                            selectUniqueTagItem=selectedVersions[shotstage])              
+                            selectUniqueTagItem=selectedVersions[shotstage])
 
 
     #OVERRIDE
@@ -1047,8 +1047,8 @@ class ShotManagerUI(ManagerUI):
 
     #OVERRIDE
     def versionListCallback(self, shotstage):
-        ver = cmds.textScrollList(self.ui["verList" + shotstage], 
-                                    query=True, 
+        ver = cmds.textScrollList(self.ui["verList" + shotstage],
+                                    query=True,
                                     selectUniqueTagItem=True)
 
         self.C_versionListChanged(ver[0], shotstage)
@@ -1099,7 +1099,7 @@ class ShotManagerUI(ManagerUI):
                                             height=40,
                                             parent=self.ui["verBtnRowUp" + shotstage],
                                             command=lambda _, x = shotstage: self.C_publishSelectedVersion(x))
-        
+
         if shotstage != "Lighting":
             self.ui["transferBtn" + shotstage] = cmds.button(
                                                 label="->",
@@ -1109,7 +1109,7 @@ class ShotManagerUI(ManagerUI):
                                                 command=lambda _, x = shotstage: self.C_transferVersion(x))
 
         cmds.separator(height=10, style="none", parent=self.ui["verListCol" + shotstage])
-        
+
         # -- row
         self.ui["verBtnRowDown" + shotstage] = cmds.rowLayout(
                                             numberOfColumns=4,
