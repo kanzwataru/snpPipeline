@@ -22,7 +22,7 @@ def backupProject(root):
 
     script = '/'.join([SHELL_SCRIPT_PATH, "archive-nix.sh"])
 
-    cmd = TERM + script + ' ' + root + ' ' + backupdir
+    cmd = script + ' ' + root + ' ' + backupdir
 
     run(cmd)
 
@@ -36,7 +36,7 @@ def syncToUSB(root):
 
     script = os.path.join(SHELL_SCRIPT_PATH, "syncfromto.sh")
 
-    cmd = TERM + script + ' ' + root + '/ ' + usbdir
+    cmd = script + ' ' + root + '/ ' + usbdir
 
     run(cmd)
 
@@ -50,6 +50,6 @@ def syncFromUSB(root):
 
     script = os.path.join(SHELL_SCRIPT_PATH, "syncfromto.sh")
 
-    cmd = TERM + script + ' ' + usbdir + '/ ' + root
+    cmd = script + ' ' + usbdir + '/ ' + root
 
     run(cmd)

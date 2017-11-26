@@ -12,7 +12,7 @@ then
 else
     cd "$2"
 
-    filename=$ARCHIVENAME.tar
+    filename=$ARCHIVENAME.tar.gz
     count=0
 
     while [[ -f $filename ]]; do
