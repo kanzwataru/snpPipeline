@@ -12,9 +12,9 @@ SHELL_SCRIPT_PATH = os.path.join(os.path.dirname(inspect.getfile(core)), "shells
 
 # Commands for opening terminal on different OSes
 TERMINALS = {
-    "Linux" : "x-terminal-emulator -e /bin/bash ",
-    "Windows" : "D:\\_applications\\cygwin64\\bin\\mintty.exe /bin/bash ",
-    "Mac" : ''
+    "Linux" : "x-terminal-emulator -e /bin/bash __CMD__",
+    "Windows" : "D:\\_applications\\cygwin64\\bin\\mintty.exe /bin/bash __CMD__",
+    "Darwin" : """osascript -e 'tell application "Terminal" to do script "__CMD__"'"""
 }
 
 TERM = TERMINALS[platform.system()]
@@ -42,4 +42,4 @@ def run(cmd, force_posix=True):
         else:
             subprocess.call("cmd.exe /k " + cmd, shell=True)
     else:
-        subprocess.call(TERM + cmd, shell=True)
+        subprocess.call(TERM.replace("__CMD__", cmd), shell=True)
