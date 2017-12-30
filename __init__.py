@@ -2,19 +2,31 @@
 Pipeline for final film
 """
 import os
+import inspect
 
-import core
-reload(core)
+import utilities
+reload(utilities)
 import dataTypes
 reload(dataTypes)
+import core
+reload(core)
+
+PROJECT_ROOT_VAR="FINAL_FILM_ROOT"
+ROOT_DIR = os.path.normpath(os.environ[PROJECT_ROOT_VAR])
+
+BLENDER_DIR = os.path.normpath(os.environ["BLENDER_DIR"]).replace('"', '')
+BLENDER_SCRIPTS_DIR = os.path.normpath(os.path.join(os.path.dirname(inspect.getfile(core)), "blender"))
+
 import backupman
 reload(backupman)
+import blenderinterop
+reload(blenderinterop)
+import rendercore
+reload(rendercore)
 
 import gui
 reload(gui)
 
-PROJECT_ROOT_VAR="FINAL_FILM_ROOT"
-ROOT_DIR = os.path.normpath(os.environ[PROJECT_ROOT_VAR])
 
 def createAssetManager(atype):
     # Make Manager
@@ -25,6 +37,12 @@ def createAssetManager(atype):
 def createShotManager():
     # Make Manager
     manager = gui.assetManager.ShotManager()
+
+    return manager
+
+def createRenderManager():
+    # Make Manager
+    manager = gui.renderManager.RenderManagerUI()
 
     return manager
 

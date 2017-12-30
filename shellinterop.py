@@ -18,8 +18,6 @@ TERMINALS = {
 }
 
 TERM = TERMINALS[platform.system()]
-# Cygwinize the path to the shell scripts directory on Windows
-if platform.system() == "Windows": SHELL_SCRIPT_PATH = cygwinizePath(SHELL_SCRIPT_PATH)
 
 
 def getUSBDir():
@@ -40,6 +38,10 @@ def run(cmd, force_posix=True):
         if force_posix:
             subprocess.call("path D:\\_applications\\cygwin64\\bin;%PATH% && " + TERM + cmd, shell=True)
         else:
-            subprocess.call("cmd.exe /k " + cmd, shell=True)
+            subprocess.call("start cmd.exe /k " + cmd, shell=True)
     else:
         subprocess.call(TERM.replace("__CMD__", cmd), shell=True)
+
+
+# Cygwinize the path to the shell scripts directory on Windows
+if platform.system() == "Windows": SHELL_SCRIPT_PATH = cygwinizePath(SHELL_SCRIPT_PATH)

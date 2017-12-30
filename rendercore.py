@@ -11,22 +11,32 @@ from snpPipeline.shellinterop import *
 # --
 # Platform-specifics
 if platform.system() == "Windows":
-    newline = "\r\n"
-    render_cmd = "C:\\Program Files\\Autodesk\\Maya2017\\bin\\render.exe"
-    ext = "bat"
+    nl = "\r\n"
+    header = "@echo off\nset MAYA_VP2_DEVICE_OVERRIDE=VirtualDeviceDx11\n set MAYA_OGS_GPU_MEMORY_LIMIT=128\nset MAYA_NO_PARALLEL_DRAW=1\nset MAYA_NO_TBB=1\nset MAYA_NO_PARALLEL_MEMCPY=1"
+    render_cmd = "\"C:\\Program Files\\Autodesk\\Maya2017\\bin\\render.exe\""
+    ext = ".bat"
+    last = ""
 elif platform.system() == "Linux":
-    newline = "\n"
+    nl = "\n"
+    header = "#!/bin/sh"
     render_cmd = "Render"
-    ext = "sh"
+    ext = ".sh"
+    last = "read -p \"Press Return to continue...\""
 elif platform.system() == "Darwin":
-    newline = "\n"
+    nl = "\n"
+    header = "#!/bin/sh"
     render_cmd = "/Applications/Autodesk/maya2017/Maya.app/Contents/bin/Render"
-    ext = "sh"
+    ext = ".sh"
+    last = "read -p \"Press Return to continue...\""
 # --
 
 
+def getCompDirFor(scene):
+    return os.path.join(ROOT_DIR, "3_Comp", scene.name)
+
+
 def createCompDirFor(scene):
-    shot_dir = os.path.join(ROOT_DIR, "3_Comp", scene.name)
+    shot_dir = getCompDirFor(scene)
     if not os.path.exists(shot_dir):
         os.mkdir(shot_dir)
         os.mkdir(os.path.join(shot_dir, "Footage"))
@@ -41,22 +51,22 @@ def formatRenderCommand(outputDir, fileType, mayaFile):
 
 
 def scenesToShellScript(scenes_versions, fileType):
-    script = ""
+    script = header + nl
     for scene, ver in scenes_versions.iteritems():
         render_dir = os.path.join(createCompDirFor(scene), "Footage")
-        script += formatRenderCommand(render_dir, fileType, scene.fileFromVersion(ver)) + newline
+        script += formatRenderCommand(render_dir, fileType, scene.fileFromVersion(ver)) + nl
 
-    script += "read -p \"Press Return to continue...\""
+    script += nl + last
 
     return script
 
 
 def renderOut(scenes_versions, fileType):
     script = scenesToShellScript(scenes_versions, fileType)
-    script_file = os.path.join(ROOT_DIR, "render_script" + ext)
+    script_file = os.path.join(ROOT_DIR, "_temp", "render_script" + ext)
 
     with open(script_file, mode="w") as file:
         file.write(script)
 
-    run(script_file)
-    os.remove(script_file)
+    run(script_file, force_posix=False)
+    #os.remove(script_file)

@@ -12,8 +12,7 @@ from collections import namedtuple
 import maya.cmds as cmds
 import maya.mel as mel
 
-# (third-party) https://github.com/abstractfactory/maya-capture
-#from capture import capture
+import snpPipeline.utilities as utilities
 
 ASSET_TYPES={
     "rig" : "Rigs",
@@ -256,7 +255,8 @@ class Asset(object):
     def fileFromVersion(self, version, isRelative=False):
         # checks
         if not version:
-            cmds.error("Internal error: no version specified for " + str(self))
+            print(str(self) + ": This asset is empty")
+            return None
         elif not (version in self.versions.keys()):
             cmds.error("Internal error: version does not exist")
 
@@ -380,6 +380,20 @@ class Shot(object):
 
         return files
 
+    def getLatestShotstage(self):
+        def mtime_wrapper(two):
+            return os.path.getmtime(two[0])
+
+        lo, anim, light = (self.shotstages["Layout"], self.shotstages["Animation"], self.shotstages["Lighting"])
+
+        layout = (lo.fileFromVersion(lo.latest), "Layout")
+        animation = (anim.fileFromVersion(anim.latest), "Animation")
+        lighting = (light.fileFromVersion(light.latest), "Lighting")
+
+        newest = max((layout, animation, lighting), key=mtime_wrapper)
+
+        return newest[1]
+
     def renderVersion(self, version, ofStage):
         raise NotImplementedError
 
@@ -392,7 +406,8 @@ class Shot(object):
 
         return currentcam
 
-    def playblastVersion(self, version, ofStage, toPath=None, fromCam=None, resolutionMult=0.75):
+    def playblastVersion(self, version, ofStage, toPath=None, fromCam=None, resolutionMult=0.75, terseName=False):
+        self.shotstages[ofStage].openVersion(version)
         # Get full file path of version
         versionfile = self.shotstages[ofStage].fileFromVersion(version)
 
@@ -400,7 +415,10 @@ class Shot(object):
         blastdir = toPath if toPath else os.path.join(os.path.split(versionfile)[0], "Blasts")
 
         # Name of playblast file
-        blastname = '_'.join([self.name, ofStage, version, "PLAYBLAST"])
+        if terseName:
+            blastname = self.name
+        else:
+            blastname = '_'.join([self.name, ofStage, version, "PLAYBLAST"])
         file = os.path.join(blastdir, blastname)
 
         # Avoid overwriting existing playblasts
@@ -422,7 +440,11 @@ class Shot(object):
             if cmds.objExists(shotcam):
                 cmds.lookThru(shotcam)
             else:
-                cmds.warning("Shot cam does not exist, using current camera (naming convention: [SHOTNAME]_CAM")
+                utilities.getRenderCams()
+                if rendercams:
+                    cmds.lookThru(rendercams[0])
+                else:
+                    cmds.warning("Shot cam does not exist, using current camera (naming convention: [SHOTNAME]_CAM")
 
         # Playblast
         w = cmds.getAttr("defaultResolution.width") * resolutionMult

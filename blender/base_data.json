@@ -1,0 +1,133 @@
+{
+    "library": {
+        "Material": [
+            "SHADOW",
+            "SHADOW_RECEIVE",
+            "SHADOW_SHADED",
+            "GLASS"
+        ],
+        "FreestyleLineStyle": [
+            "Hair",
+            "Hair_details",
+            "MX3Thick",
+            "MX3Thick.001",
+            "Regular",
+            "Regular.001"
+        ]
+    },
+    "material_overrides" : {
+        "GLASS": [
+            "MX3Scout:glassBack",
+            "MX3Scout:glassFront",
+            "MX3Scout:cockpitDoorR",
+            "MX3Scout:cockpitDoorL"
+        ]
+    },
+    "groups": {
+        "Default": {
+            "style": "Regular",
+            "flags": [
+                "silhouette",
+                "border",
+                "contour"
+            ]
+        },
+        "Amelia_Grungy": {
+            "style": "Regular",
+            "flags": [
+                "silhouette",
+                "border",
+                "contour",
+                "ridge_valley",
+                "crease",
+                "external_contour"
+            ],
+            "geo": [
+                "Amelia:skirt_GEO",
+                "Amelia:shorts_GEO",
+                "Amelia:shirt_GEO",
+                "Amelia:belt_GEO",
+                "Amelia:boots_GEO",
+                "Amelia:topButton_GEO",
+                "Amelia:btmButton_GEO",
+                "Amelia:beltBuckle_GEO",
+                "Amelia:sleeveSymbols_GEO"
+            ]
+        },
+        "Amelia_Face": {
+            "style": "Regular",
+            "flags": [
+                "silhouette",
+                "border"
+            ],
+            "geo": [
+                "Amelia:head_GEO",
+                "Amelia:eyebrows_GEO",
+                "Amelia:body_GEO"
+            ]
+        },
+        "Amelia_Hair": {
+            "style": "Hair",
+            "flags": [
+                "silhouette",
+                "border",
+                "crease"
+            ],
+            "geo": [
+                "Amelia:hair_GEO"
+            ]
+        },
+        "Amelia_HairDetails": {
+            "style": "Hair_details",
+            "flags": [
+                "suggestive_contour"
+            ],
+            "geo": [
+                "Amelia:hair_GEO"
+            ]
+        },
+        "Amelia_Borders": {
+            "style": "Regular.001",
+            "flags": [
+                "silhouette"
+            ],
+            "geo": [
+                "Amelia:btmLashes_GEO",
+                "Amelia:topLashes_GEO"
+            ]
+        },
+        "MX3Thick": {
+            "style": "MX3Thick",
+            "flags": [
+                "silhouette",
+                "border",
+                "crease"
+            ],
+            "geo": [
+                "__PARENT__ = MX3Scout:geo_GRP"
+            ]
+        },
+        "MX3Details": {
+            "style": "MX3Thick.001",
+            "flags": [
+                "silhouette",
+                "border",
+                "crease",
+                "suggestive_contour"
+            ],
+            "geo": [
+                "MX3Scout:sideSwitchPanelBase",
+                "MX3Scout:storageUnitCover",
+                "MX3Scout:glassBack",
+                "MX3Scout:glassFront",
+                "MX3Scout:baseRing",
+                "MX3Scout:cockpitPanelFrontBase",
+                "MX3Scout:chairStructBase",
+                "MX3Scout:chairStructBack",
+                "MX3Scout:seatHeadrest",
+                "MX3Scout:seatBack",
+                "MX3Scout:body"
+            ]
+        }
+    }
+}
