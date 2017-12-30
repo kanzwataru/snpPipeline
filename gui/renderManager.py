@@ -21,9 +21,9 @@ HEIGHT = 700
 
 
 def getBlastDir(shot):
-	"""
-	Get the global playblast directory for use in editing (the equivalent of rendering)
-	"""
+    """
+    Get the global playblast directory for use in editing (the equivalent of rendering)
+    """
     path = os.path.join(ROOT_DIR, "4_Editorial", "Footage", "Blasts")
     if not os.path.exists(path):
         os.makedirs(path)
@@ -32,18 +32,18 @@ def getBlastDir(shot):
 
 
 def getBlenderPath(shot):
-	"""
-	Returns path to the shot's Blender directory
-	(This is where alembic and blender files are stored)
-	"""
+    """
+    Returns path to the shot's Blender directory
+    (This is where alembic and blender files are stored)
+    """
     return os.path.join(shot.getBaseDir(), "Blender")
 
 
 def getBlenderStatus(shot):
-	"""
-	If we have a blender file for this shot and if
-	it is up to date or not (in regards to the lighting file)
-	"""
+    """
+    If we have a blender file for this shot and if
+    it is up to date or not (in regards to the lighting file)
+    """
     path = getBlenderPath(shot)
     asset = shot.shotstages["Lighting"]
     has = False
@@ -63,10 +63,10 @@ def getBlenderStatus(shot):
 
 
 def getRenderStatus(shot):
-	"""
-	Do we have rendered frames in Editorial and are they older or newer than
-	the latest Lighting shot
-	"""
+    """
+    Do we have rendered frames in Editorial and are they older or newer than
+    the latest Lighting shot
+    """
     path = os.path.join(rc.getCompDirFor(shot), "Footage")
     asset = shot.shotstages["Lighting"]
     has = False
@@ -83,22 +83,24 @@ def getRenderStatus(shot):
     return has, old
 
 def initShadMap(shot):
-	"""
-	Set up the shadow map for each Enogu material that has shadow map support
-	"""
+    """
+    Set up the shadow map for each Enogu material that has shadow map support
+    """
     # find where the shadow map would be
-    shad_map = os.path.join(ROOT_DIR, "3_Comp", shot.name, "Footage", "SHADOW", "SHADOW_0008.png")
-    shad_map_rel = os.path.join("$" + PROJECT_ROOT_VAR, "3_Comp", shot.name, "Footage", "SHADOW", "SHADOW_0008.png")
-
-    if not os.path.exists(shad_map):
-        print(shot.name + " has no valid shadow map, skipping")
-        return
+    shad_map_dir = os.path.join(ROOT_DIR, "3_Comp", shot.name, "Footage", "SHADOW")
+    if os.path.exists(shad_map_dir):
+        shads = os.listdir(shad_map_dir)
+        if shads:
+            shad_map = os.path.join(shad_map_dir, shads[0])
+        else:
+            print(shot.name + " has no valid shadow map, skipping")
+            return        
 
     # try to apply it to all Enogu materials
     enogu_materials = ers.getEnoguShaders()
     for mat in enogu_materials:
         try:
-            cmds.setAttr(mat + ".shadowMapTex", shad_map_rel, type="string")
+            cmds.setAttr(mat + ".shadowMapTex", shad_map, type="string")
             cmds.setAttr(mat + ".useShadowMapTex", True)
         except Exception, e:
             print(e)
@@ -110,19 +112,19 @@ def initShadMap(shot):
 
 
 def fixRenderSettings():
-	"""
-	Any render setting fixes go here
-	"""
+    """
+    Any render setting fixes go here
+    """
     cmds.setAttr("defaultRenderGlobals.imageFilePrefix",
                      IMAGES_FOLDER_STRUCTURE,
                      type="string")
 
 
 def sendToBlender(shot, update=False):
-	"""
-	Send the shot to Blender and set up all the layers needed
-	for rendering shadows and Freestyle
-	"""
+    """
+    Send the shot to Blender and set up all the layers needed
+    for rendering shadows and Freestyle
+    """
     # shot info
     asset = shot.shotstages["Lighting"]
     if not asset.latest:
@@ -208,9 +210,9 @@ def sendToBlender(shot, update=False):
 
 
 def renderBlender(shots):
-	"""
-	Render out the Blender shots
-	"""
+    """
+    Render out the Blender shots
+    """
     blender_files = []
     for shot in shots:
         shot_asset = shot.shotstages["Lighting"]
@@ -223,9 +225,9 @@ def renderBlender(shots):
 
 
 def render(shots):
-	"""
-	Render out maya shots
-	"""
+    """
+    Render out maya shots
+    """
     scenes_versions = {}
     for shot in shots:
         shot_asset = shot.shotstages["Lighting"]
