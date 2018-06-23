@@ -7,7 +7,7 @@ import platform
 from snpPipeline.shellinterop import *
 
 BACKUP_DIR_VAR = "BACKUP_DIR"
-BACKUP_DIR = os.path.normpath(os.environ[BACKUP_DIR_VAR])
+BACKUP_DIR = os.path.normpath(os.environ[BACKUP_DIR_VAR]).replace('\\', '/')
 
 
 def backupProject(root):

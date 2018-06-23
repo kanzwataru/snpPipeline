@@ -5,7 +5,7 @@ from sets import Set
 import maya.cmds as cmds
 
 import snpPipeline.core as p
-import snpPipeline.rendercore as rc
+import snpPipeline.seq_rendercore as rc
 import snpPipeline.blenderinterop as blender
 import snpPipeline.utilities as utilities
 from snpPipeline import PROJECT_ROOT_VAR, ROOT_DIR, BLENDER_DIR
@@ -67,7 +67,7 @@ def getRenderStatus(shot):
     Do we have rendered frames in Editorial and are they older or newer than
     the latest Lighting shot
     """
-    path = os.path.join(rc.getCompDirFor(shot), "Footage")
+    path = os.path.join(rc.getCompDirFor(shot.name), "Footage")
     asset = shot.shotstages["Lighting"]
     has = False
     old = False
@@ -191,7 +191,7 @@ def sendToBlender(shot, update=False):
 
     root = {
         "render_layers": layer_data, 
-        "render_output": rc.getCompDirFor(shot),
+        "render_output": os.path.join(rc.getCompDirFor(shot.name), 'Footage'),
         "main_cam": camera,
         "lights": lights
     }
@@ -228,7 +228,6 @@ def render(shots):
     """
     Render out maya shots
     """
-    scenes_versions = {}
     for shot in shots:
         shot_asset = shot.shotstages["Lighting"]
         ver = shot_asset.latest
@@ -236,23 +235,17 @@ def render(shots):
         if not ver:
             continue
 
-        shot_asset.openVersion(ver)
+        #shot_asset.openVersion(ver)
 
         # set stuff up
         initShadMap(shot)
 
         fixRenderSettings()
 
-        # add to dict of stuff that gets rendered
-        scenes_versions[shot_asset] = ver
-
-        utilities.saveFile()
+        # render
+        rc.renderSeq(shot.name, IMAGE_FORMAT)
 
     utilities.newFile()
-
-    rc.renderOut(scenes_versions, IMAGE_FORMAT)
-
-    cmds.quit()
 
 
 class RenderManagerUI(object):

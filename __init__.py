@@ -23,6 +23,8 @@ import blenderinterop
 reload(blenderinterop)
 import rendercore
 reload(rendercore)
+import seq_rendercore
+reload(seq_rendercore)
 
 import gui
 reload(gui)

@@ -304,7 +304,6 @@ class AssetManager(Manager):
 
         if self.selectedAsset.masterstatus == 1:
             cmds.warning("MASTER file is not up-to-date")
-            return
         elif self.selectedAsset.masterstatus == 0:
             cmds.warning("No MASTER file, please publish")
             return

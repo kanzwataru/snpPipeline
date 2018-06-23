@@ -10,7 +10,7 @@ else
     echo "$1"
     echo "$2"
 
-    rsync -rltDv --delete --exclude 'Footag*' --one-file-system --no-owner --no-perms --no-group $1 $2
+    rsync -rltDv --delete --exclude 'Footag*' --exclude 'movie*' --one-file-system --no-owner --no-perms --no-group $1 $2
 fi
 
 read -p "Press Return to continue..."

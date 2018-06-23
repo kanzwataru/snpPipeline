@@ -36,7 +36,7 @@ def cygwinizePath(path):
 def run(cmd, force_posix=True):
     if platform.system() == "Windows":
         if force_posix:
-            subprocess.call("path D:\\_applications\\cygwin64\\bin;%PATH% && " + TERM + cmd, shell=True)
+            subprocess.call("path D:\\_applications\\cygwin64\\bin;%PATH% && " + TERM.replace("__CMD__", cmd), shell=True)
         else:
             subprocess.call("start cmd.exe /k " + cmd, shell=True)
     else:
